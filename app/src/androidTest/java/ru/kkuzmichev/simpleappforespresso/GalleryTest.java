@@ -3,9 +3,14 @@ package ru.kkuzmichev.simpleappforespresso;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
+import static org.hamcrest.core.AllOf.allOf;
+
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.espresso.IdlingRegistry;
@@ -36,11 +41,26 @@ public class GalleryTest {
 
     @Test
     public void testOpenGalleryAndCheckItem7() {
+        ViewInteraction menu = onView(allOf(isAssignableFrom(AppCompatImageButton.class), isDisplayed()));
+        menu.check(matches(isDisplayed()));
+        menu.perform(click());
 
-        ViewInteraction menuItem = onView(withText("Gallery"));
-        menuItem.perform(click());
+        ViewInteraction gallery = onView(withId(R.id.nav_gallery));
+        gallery.perform(click());
 
-        ViewInteraction element = onView(withText("7"));
+        ViewInteraction recyclerView = onView(withId(R.id.recycle_view));
+        recyclerView.check(matches(isDisplayed()));
+
+        ViewInteraction element = onView(allOf(withId(R.id.item_number), withText("7")));
         element.check(matches(isDisplayed()));
     }
 }
+
+
+        //        ViewInteraction menuItem = onView(withId(R.id.nav_gallery));
+//        menuItem.perform(click());
+//
+//        ViewInteraction element = onView(allOf(withId(R.id.item_number), withText("7")));
+//        element.check(matches(isDisplayed()));
+//    }
+
